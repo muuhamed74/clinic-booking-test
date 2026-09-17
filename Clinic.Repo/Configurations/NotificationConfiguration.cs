@@ -24,6 +24,20 @@ namespace Clinic.Repo.Configurations
             builder.Property(n => n.Message)
                    .IsRequired()
                    .HasMaxLength(500);
+
+            // new property 
+
+            builder.Property(n => n.PhoneNumber)
+              .IsRequired()
+              .HasMaxLength(20);
+
+            builder.HasIndex(n => n.IsSent);
+
+
+            // another new property
+
+            builder.Property(n => n.SentBySessionId)
+             .HasMaxLength(50);
         }
     }
 }

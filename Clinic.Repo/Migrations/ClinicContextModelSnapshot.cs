@@ -239,7 +239,7 @@ namespace Clinic.Repo.Migrations
                     b.Property<int?>("AppointmentArchiveId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("AppointmentId")
+                    b.Property<int?>("AppointmentId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Channel")
@@ -258,8 +258,17 @@ namespace Clinic.Repo.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)");
 
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
                     b.Property<DateTime?>("SentAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("SentBySessionId")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
                     b.Property<int>("Type")
                         .HasColumnType("integer");
@@ -269,6 +278,8 @@ namespace Clinic.Repo.Migrations
                     b.HasIndex("AppointmentArchiveId");
 
                     b.HasIndex("AppointmentId");
+
+                    b.HasIndex("IsSent");
 
                     b.ToTable("Notifications", (string)null);
                 });
@@ -467,8 +478,7 @@ namespace Clinic.Repo.Migrations
                     b.HasOne("Clinic.Domain.Entities.Appointment", "Appointment")
                         .WithMany("Notifications")
                         .HasForeignKey("AppointmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Appointment");
                 });

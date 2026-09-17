@@ -270,7 +270,7 @@ namespace Clinic.Service
 
                     dto.EstimatedTime = TimeZoneInfo.ConvertTimeFromUtc(appointment.EstimatedTime.Value, egyptZone);
                     dto.Date = TimeZoneInfo.ConvertTimeFromUtc(appointment.Date.Value, egyptZone);
-                    //await _wpsenderservice.SendStatusAsync(appointment);
+                    await _wpsenderservice.SendStatusAsync(appointment);
                     return dto;
                 }
                 catch (DbUpdateException ex) when (attempt < maxRetries)

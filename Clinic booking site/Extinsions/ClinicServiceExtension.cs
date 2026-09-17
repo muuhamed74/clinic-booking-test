@@ -41,14 +41,19 @@ namespace Clinic_booking_site.Extinsions
             services.AddScoped<IBookingService, BookingService>();
             services.AddScoped<INotificationService, NotificationService>();
             services.AddScoped<IAdminService, AdminService>();
-            services.AddScoped<ReminderJob>();
             services.AddScoped<IDoctorAnnouncementService, DoctorAnnouncementService>();
 
+            //Background Services
+            //services.AddScoped<ReminderJob>();
+            services.AddScoped<NotificationDispatchJob>();
 
 
 
-            services.AddHttpClient<Iwpsenderservice, wpsenderservice>();
-            services.AddHttpClient<IWhatsAppProvider, WhatsAppProvider>();
+            services.AddScoped<Iwpsenderservice, wpsenderservice>();
+            services.AddHttpClient<IWhatsAppProvider, WhatsAppProvider>(client =>
+            {
+                client.Timeout = TimeSpan.FromSeconds(20);
+            });
 
             // For Development:
             services.AddScoped<IMessageProvider, NewSmsProvider>();

@@ -21,13 +21,13 @@ namespace Clinic.Service
             _httpClient = httpClient;
         }
 
-        public async Task SendAsync(string phoneNumber, string message)
+        public async Task SendAsync(string sessionId, string phoneNumber, string message)
         {
             var payload = new NewApiRequest
             {
                 recipients = phoneNumber,
                 message = message,
-                sessionId = _settings.SessionId,
+                sessionId = sessionId,
                 contentType = "string",
                 no_duplication = false
             };

@@ -32,11 +32,11 @@ namespace Clinic.Repo.Configurations
                    .HasMaxLength(20);
 
 
-
+            // from Cascade to SetNull
             builder.HasMany(a => a.Notifications)
                    .WithOne(n => n.Appointment)
                    .HasForeignKey(n => n.AppointmentId)
-                   .OnDelete(DeleteBehavior.Cascade);
+                   .OnDelete(DeleteBehavior.SetNull);
 
 
             builder.Property(a => a.AppointmentType)

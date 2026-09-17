@@ -11,5 +11,10 @@ namespace Clinic.Domain.Entities
         public bool SendBookingConfirmation { get; set; }
         public bool SendReminder { get; set; }
         public bool SendCancellation { get; set; }
+
+        // adding properties for delay settings
+
+        public int MinDelaySeconds { get; set; } 
+        public int MaxDelaySeconds { get; set; } 
     }
 }

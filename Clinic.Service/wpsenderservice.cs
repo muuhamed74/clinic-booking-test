@@ -9,29 +9,31 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Twilio.Types;
 
 namespace Clinic.Service
 {
     public class wpsenderservice : Iwpsenderservice
     {
-        private readonly IWhatsAppProvider _messageProvider;
+        //private readonly IWhatsAppProvider _messageProvider;
         private readonly WhatsAppSettings _settings;
         private readonly IUnitOfWork _unitOfWork;
         private readonly NotificationSettings _notificationSettings;
-        private readonly HttpClient _httpClient;
+        //private readonly HttpClient _httpClient;
 
         public wpsenderservice(
-            IWhatsAppProvider whatsAppProvider,
+            //IWhatsAppProvider whatsAppProvider,
             IOptions<WhatsAppSettings> settings,
             IUnitOfWork unitOfWork,
-            IOptions<NotificationSettings> notificationOptions,
-            HttpClient httpClient)
+            IOptions<NotificationSettings> notificationOptions
+            //HttpClient httpClient
+            )
         {
-            _messageProvider = whatsAppProvider;
+            //_messageProvider = whatsAppProvider;
             _settings = settings.Value;
             _unitOfWork = unitOfWork;
             _notificationSettings = notificationOptions.Value;
-            _httpClient = httpClient;
+            //_httpClient = httpClient;
         }
 
         public async Task SendStatusAsync(Appointment appointment)
@@ -80,33 +82,39 @@ namespace Clinic.Service
             string messageBody = type switch
             {
                 NotificationType.BookingConfirmation =>
-                    $"أهلا بكم في عيادة د/ أميرة محسن\n" +
+                    $"أهلا بيك: {appointment.PatientName}\n" +
                     $"موعدك يوم {formattedDate} الساعة {formattedHour}\n" +
                     $"ودورك رقم {appointment.QueueNumber}\n" +
                     $"ولمتابعة الدور: https://amiramohsenclinic.com/info",
 
+
                 NotificationType.Cancellation =>
-                    $"تنويه: تم إلغاء حجز {appointment.PatientName} بعيادة د/ أميرة محسن للتأخر أو ظرف طارئ.",
+                    $"تنويه: تم إلغاء حجز {appointment.PatientName} للتأخر أو ظرف طارئ.",
 
                 NotificationType.Rescheduling =>
-                     $"تم تغيير ميعادكم في عيادة د/ أميرة محسن ليصبح يوم {formattedDate} الساعة {formattedHour}، وذلك لوجود حالة طارئة.",
+                     $"أهلا بيك: {appointment.PatientName}\n" +
+                     $"تم تغيير ميعادك ليصبح يوم {formattedDate} الساعة {formattedHour}، وذلك لوجود حالة طارئة.",
 
+
+                // Not used in the current version, but kept for future use
                 NotificationType.Reminder =>
                     $"يُرجى الحضور لعيادة د/ أميرة محسن لتفادي إلغاء الحجز، موعدك الساعة {formattedHour} ودورك رقم {appointment.QueueNumber}.",
 
                 _ => throw new ArgumentOutOfRangeException()
             };
 
-            var notification = await SaveNotificationAsync(appointment.Id, messageBody, type);
+            var notification = await SaveNotificationAsync(appointment.Id, appointment.Phone, messageBody, type);
 
-            await _messageProvider.SendAsync(appointment.Phone, messageBody);
+            // willn't use it anymore for sending messages directly,
+            // instead we will use the notification table to send messages in a background service
 
-            notification.IsSent = true;
-            notification.SentAt = DateTime.UtcNow;
-            await _unitOfWork.CompleteAsync();
+            //await _messageProvider.SendAsync(appointment.Phone, messageBody);
+            //notification.IsSent = true;
+            //notification.SentAt = DateTime.UtcNow;
+            //await _unitOfWork.CompleteAsync();
         }
 
-        private async Task<Notification> SaveNotificationAsync(int appointmentId, string message, NotificationType type)
+        private async Task<Notification> SaveNotificationAsync(int appointmentId, string phoneNumber, string message, NotificationType type)
         {
             var notification = new Notification
             {
@@ -114,7 +122,9 @@ namespace Clinic.Service
                 Channel = "WhatsApp",
                 Message = message,
                 IsSent = false,
-                Type = type
+                Type = type,
+                // new property 
+                PhoneNumber = phoneNumber,
             };
 
             await _unitOfWork.Reposit<Notification>().AddAsync(notification);

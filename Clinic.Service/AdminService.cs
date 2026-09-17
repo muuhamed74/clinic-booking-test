@@ -134,7 +134,7 @@ namespace Clinic.Service
 
                 appointment.Status = AppointmentStatus.Cancelled;
 
-                //await _wpsenderservice.SendStatusAsync(appointment);
+                await _wpsenderservice.SendStatusAsync(appointment);
 
                 var archiveAppointment = await _unitOfWork.Reposit<AppointmentArchive>()
                    .GetEntityWithSpec(new AppointmentArchiveByAppointmentIdSpecification(appointment.Id));
@@ -319,7 +319,7 @@ namespace Clinic.Service
                 await _unitOfWork.CompleteAsync();
 
 
-                //await _wpsenderservice.SendStatusAsync(appointment);
+                await _wpsenderservice.SendStatusAsync(appointment);
 
 
                 var allAppointmentsToday = await _unitOfWork.Reposit<Appointment>()
@@ -350,10 +350,10 @@ namespace Clinic.Service
                 await _unitOfWork.CompleteAsync();
                 await transaction.CommitAsync();
 
-                //foreach (var appt in sameDayAppointments)
-                //{
-                //    await _wpsenderservice.SendStatusAsync(appt);
-                //}
+                foreach (var appt in sameDayAppointments)
+                {
+                    await _wpsenderservice.SendStatusAsync(appt);
+                }
 
                 return _mapper.Map<AppointmentDto>(appointment);
             }
@@ -561,9 +561,9 @@ namespace Clinic.Service
                 await _unitOfWork.CompleteAsync();
                 await transaction.CommitAsync();
 
-                //await _wpsenderservice.SendStatusAsync(appointment);
-                //foreach (var appt in followingAppointments)
-                //    await _wpsenderservice.SendStatusAsync(appt);
+                await _wpsenderservice.SendStatusAsync(appointment);
+                foreach (var appt in followingAppointments)
+                    await _wpsenderservice.SendStatusAsync(appt);
 
                 return _mapper.Map<AppointmentDto>(appointment);
             }

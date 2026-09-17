@@ -27,12 +27,14 @@ namespace Clinic_booking_site
 
             await builder.Services.AddClinicServices(builder.Configuration);
             builder.Services.AddAutoMapper(cfg => {cfg.AddProfile<MappingProfile>(); });
-            builder.Services.AddHangfireServer();
- 
-         
+            builder.Services.AddHangfireServer(options =>
+            {
+                options.WorkerCount = 10;
+            });
 
 
-  
+
+
 
             //for validation error
             builder.Services.Configure<ApiBehaviorOptions>(options =>
@@ -78,19 +80,32 @@ namespace Clinic_booking_site
             var egyptZone = TimeZoneInfo.FindSystemTimeZoneById("Egypt Standard Time");
 
             // Schedule Recurring Jobs
-            RecurringJob.AddOrUpdate<ReminderJob>(
-            recurringJobId: "SendAppointmentReminders",      
-            methodCall: job => job.SendRemindersAsync(),     
-            cronExpression: Cron.Minutely,                   
-            options: new RecurringJobOptions
-            {
-               TimeZone = egyptZone,                       
-            },
-                queue: "default"
+            //RecurringJob.AddOrUpdate<ReminderJob>(
+            //recurringJobId: "SendAppointmentReminders",      
+            //methodCall: job => job.SendRemindersAsync(),     
+            //cronExpression: Cron.Minutely,                   
+            //options: new RecurringJobOptions
+            //{
+            //   TimeZone = egyptZone,                       
+            //},
+            //    queue: "default"
 
+            //);
+
+
+            // Dispatch Pending Notifications Job
+
+           RecurringJob.AddOrUpdate<NotificationDispatchJob>(  
+           recurringJobId: "DispatchPendingNotifications",
+           methodCall: job => job.DispatchPendingNotificationsAsync(),
+           cronExpression: Cron.Minutely,
+           options: new RecurringJobOptions
+           { 
+               TimeZone = egyptZone
+           },
+               queue: "default"
             );
 
-           
 
             //seeding admin and roles
             using (var scope = app.Services.CreateScope())

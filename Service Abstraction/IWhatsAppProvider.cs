@@ -8,6 +8,6 @@ namespace Service_Abstraction
 {
     public interface IWhatsAppProvider
     {
-        Task SendAsync(string phoneNumber, string message);
+        Task SendAsync(string sessionId , string phoneNumber, string message);
     }
 }

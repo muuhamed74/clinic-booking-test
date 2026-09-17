@@ -4,6 +4,7 @@ using Clinic.Domain.Repositories;
 using Clinic.Domain.Specifications.Clinic.Specifications;
 using Clinic.Repo.Repositories;
 using Clinic.Service;
+using Hangfire;
 using Microsoft.AspNetCore.Routing;
 using Service_Abstraction;
 
@@ -27,6 +28,9 @@ namespace Clinic_booking_site.Helpers.Hangfire
             _wpsenderservice = wpsenderservice;
         }
 
+
+        [DisableConcurrentExecution(timeoutInSeconds: 5)]
+        [AutomaticRetry(Attempts = 0)]
         public async Task SendRemindersAsync()
         {
             try
@@ -50,7 +54,7 @@ namespace Clinic_booking_site.Helpers.Hangfire
                     if (existingReminder != null && existingReminder.IsSent)
                         continue; 
 
-                    await _wpsenderservice.SendReminderAsync(appointment);
+                    //await _wpsenderservice.SendReminderAsync(appointment);
 
                 }
             }

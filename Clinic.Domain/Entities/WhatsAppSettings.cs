@@ -10,6 +10,12 @@ namespace Clinic.Domain.Entities
     {
         public string ApiUrl { get; set; }
         public string ApiToken { get; set; }
-        public string SessionId { get; set; }
+        //public string SessionId { get; set; }
+       
+        
+        // new property 
+        public List<WhatsAppSenderSettings> Senders { get; set; } = new();
+
+
     }
 }
