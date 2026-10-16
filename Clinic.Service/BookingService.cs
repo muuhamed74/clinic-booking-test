@@ -1,19 +1,25 @@
-﻿using System;
+﻿using AutoMapper;
+using Clinic.Domain.DTOs;
+using Clinic.Domain.Entities;
+using Clinic.Domain.Entities.Enums;
+using Clinic.Domain.Entities.Patient_Notifications;
+
+//using Clinic.Domain.Entities.Patient_Notifications;
+using Clinic.Domain.Repositories;
+using Clinic.Domain.Specifications.Clinic.Specifications;
+using Clinic.Domain.Specifications.Clinic.Specifications.Patient_Notifications;
+using Clinic.Service.Patien_Notofcations;
+using Clinic_booking_site.Helpers.Hashing;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.Extensions.Options;
+using Service_Abstraction;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using AutoMapper;
-using Clinic.Domain.DTOs;
-using Clinic.Domain.Entities;
-using Clinic.Domain.Entities.Enums;
-using Clinic.Domain.Repositories;
-using Clinic.Domain.Specifications.Clinic.Specifications;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
-using Microsoft.Extensions.Options;
-using Service_Abstraction;
 using Twilio.Http;
 
 namespace Clinic.Service
@@ -25,19 +31,25 @@ namespace Clinic.Service
         private readonly IMapper _mapper;
         private readonly BookingSettings _settings;
         private readonly Iwpsenderservice _wpsenderservice;
+        private readonly IPatientNotificationService _patientNotificationService;
+        private readonly IPatientSessionResolver _patientSessionResolver;
 
         public BookingService(
             IUnitOfWork unitOfWork,
             INotificationService notificationService,
             IOptions<BookingSettings> settings,
              IMapper mapper,
-             Iwpsenderservice wpsenderservice)
+             Iwpsenderservice wpsenderservice,
+             IPatientNotificationService patientNotificationService,
+             IPatientSessionResolver patientSessionResolver)
         {
             _unitOfWork = unitOfWork;
             //_notificationService = notificationService;
             _mapper = mapper;
             _settings = settings.Value;
             _wpsenderservice = wpsenderservice;
+            _patientNotificationService = patientNotificationService;
+            _patientSessionResolver = patientSessionResolver;
         }
 
         public async Task<AppointmentDto> BookAppointmentAsync(AppointmentRequestDto request)
@@ -106,31 +118,29 @@ namespace Clinic.Service
                     }
                     #endregion
 
+
+
                     #region Check Patient Existence
-                    var archiveSpec = new AppointmentArchiveByPhoneSpecification(request.Phone);
-                    var archivedPatient = await _unitOfWork.Reposit<AppointmentArchive>().GetEntityWithSpec(archiveSpec);
 
-                    if (archivedPatient != null)
-                    {
-                        var existingAppointmentSpec = new AppointmentByDateAndPhoneSpecification(request.Phone, bookingDateUtc);
-                        var existingAppointment = await _unitOfWork.Reposit<Appointment>()
-                            .GetEntityWithSpec(existingAppointmentSpec);
+                    var phone = NormalizePhone(request.Phone);
 
-                        if (existingAppointment != null)
-                            throw new ArgumentException("لا يمكنك الحجز أكثر من مرة في نفس اليوم.");
-                    }
+
+
+                    //var archiveSpec = new AppointmentArchiveByPhoneSpecification(request.Phone);
+                    //var archivedPatient = await _unitOfWork.Reposit<AppointmentArchive>().GetEntityWithSpec(archiveSpec);
+
 
                     var normalizedName = NormalizeName(request.Name);
-
                     var nameParts = normalizedName.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
 
                     if (nameParts.Length != 3)
                     {
                         throw new ArgumentException("يجب إدخال اسم ثلاثي .");
                     }
 
-                    var existingAppointmentByNameSpec = new AppointmentByDateAndNameSpecification(normalizedName, bookingDateUtc);
 
+                    var existingAppointmentByNameSpec = new AppointmentByDateAndNameSpecification(normalizedName, bookingDateUtc);
                     var existingAppointmentByName = await _unitOfWork.Reposit<Appointment>()
                         .GetEntityWithSpec(existingAppointmentByNameSpec);
 
@@ -138,7 +148,37 @@ namespace Clinic.Service
                     {
                         throw new ArgumentException("يوجد حجز مسبق بنفس الاسم");
                     }
+
+                    // resolve patient and session
+                    var (patient, newRawToken) = await ResolvePatientAndSessionAsync(phone, normalizedName, request.PatientToken);
+
+
+
+                    var existingPatientAppointmentSpec = new AppointmentByPatientIdAndDateSpecification(patient.Id, bookingDateUtc);
+                    var existingPatientAppointment = await _unitOfWork.Reposit<Appointment>()
+                        .GetEntityWithSpec(existingPatientAppointmentSpec);
+
+                    if (existingPatientAppointment != null)
+                        throw new ArgumentException("لا يمكنك الحجز أكثر من مرة في نفس اليوم.");
+
+
+                    //{
+                    //    var existingAppointmentSpec = new AppointmentByDateAndPhoneSpecification(request.Phone, bookingDateUtc);
+                    //    var existingAppointment = await _unitOfWork.Reposit<Appointment>()
+                    //        .GetEntityWithSpec(existingAppointmentSpec);
+
+                    //    if (existingAppointment != null)
+                    //        throw new ArgumentException("لا يمكنك الحجز أكثر من مرة في نفس اليوم.");
+                    //}
+
+
+
+
+
                     #endregion
+
+
+
 
 
 
@@ -229,17 +269,18 @@ namespace Clinic.Service
                     #endregion
 
 
-                    #region Make The Appointment and sending Notification
+                    #region Create The Appointment 
                     var appointment = _mapper.Map<Appointment>(request);
 
 
                     appointment.PatientName = normalizedName;
-                    appointment.Phone = request.Phone;
+                    appointment.Phone = phone;
                     appointment.QueueNumber = queueNumber;
                     appointment.Status = AppointmentStatus.Waiting;
                     appointment.EstimatedTime = estimatedTimeUtc;
                     appointment.Date = bookingDateUtc.Date;
                     appointment.AppointmentType = request.AppointmentType;
+                    appointment.PatientId = patient.Id;
 
                     await _unitOfWork.Reposit<Appointment>().AddAsync(appointment);
                     await _unitOfWork.CompleteAsync();
@@ -248,7 +289,8 @@ namespace Clinic.Service
                     {
                         AppointmentId = appointment.Id,
                         PatientName = request.Name,
-                        Phone = request.Phone,
+                        PatientId = patient.Id,
+                        Phone = phone,
                         QueueNumber = queueNumber,
                         Status = AppointmentStatus.Waiting,
                         EstimatedTime = estimatedTimeUtc,
@@ -261,7 +303,7 @@ namespace Clinic.Service
 
 
                     await _unitOfWork.CompleteAsync();
-                    await transaction.CommitAsync();
+                    //await transaction.CommitAsync();
 
                     var appointmentWithPatient = await _unitOfWork.Reposit<Appointment>()
                         .GetEntityWithSpec(new AppointmentByIdWithPatientSpecification(appointment.Id));
@@ -270,7 +312,18 @@ namespace Clinic.Service
 
                     dto.EstimatedTime = TimeZoneInfo.ConvertTimeFromUtc(appointment.EstimatedTime.Value, egyptZone);
                     dto.Date = TimeZoneInfo.ConvertTimeFromUtc(appointment.Date.Value, egyptZone);
-                    await _wpsenderservice.SendStatusAsync(appointment);
+
+
+
+                    await _patientNotificationService.SendStatusAsync(appointment, appointmentArchive.Id);
+                    await _unitOfWork.CompleteAsync();
+                    await transaction.CommitAsync();
+
+
+                    //await _wpsenderservice.SendStatusAsync(appointment);
+
+
+                    dto.PatientToken = newRawToken;
                     return dto;
                 }
                 catch (DbUpdateException ex) when (attempt < maxRetries)
@@ -291,6 +344,14 @@ namespace Clinic.Service
                     throw;
                 }
             }
+
+
+
+
+
+
+
+
         }
         #endregion
 
@@ -322,8 +383,60 @@ namespace Clinic.Service
 
             try
             {
+                #region old code
+
+                //    var archiveAppointment = await _unitOfWork.Reposit<AppointmentArchive>()
+                //        .GetEntityWithSpec(new AppointmentArchiveByAppointmentIdSpecification(appointment.Id));
+
+                //    if (archiveAppointment != null)
+                //        _unitOfWork.Reposit<AppointmentArchive>().Delete(archiveAppointment);
+
+                //    _unitOfWork.Reposit<Appointment>().Delete(appointment);
+
+                //    await _unitOfWork.CompleteAsync();
+                //    await transaction.CommitAsync();
+
+                //    return _mapper.Map<AppointmentDto>(appointment);
+                //}
+                //catch
+                //{
+                //    await transaction.RollbackAsync();
+                //    throw;
+                //}
+                #endregion
+
+                var oldQueue = appointment.QueueNumber;
+                var oldEstimated = appointment.EstimatedTime;
+
+                var egyptZone = TimeZoneInfo.FindSystemTimeZoneById("Africa/Cairo");
+                var appointmentDate = TimeZoneInfo.ConvertTimeFromUtc(appointment.EstimatedTime.Value, egyptZone).Date;
+
+                var allAppointmentsToday = await _unitOfWork.Reposit<Appointment>()
+                   .GetAllWithSpecAsync(new AppointmentsWithPatientsSpecification());
+
+                var remainingAppointments = allAppointmentsToday
+                        .Where(a =>
+                        {
+                            var apptDate = TimeZoneInfo.ConvertTimeFromUtc(a.EstimatedTime.Value, egyptZone).Date;
+                            return apptDate == appointmentDate &&
+                                   a.Id != appointment.Id &&
+                                   (a.Status == AppointmentStatus.Waiting ||
+                                    a.Status == AppointmentStatus.Rescheduled);
+                        })
+                         .OrderBy(a => a.QueueNumber)
+                         .ToList();
+
+                var affectedAppointments = remainingAppointments
+                    .Where(a => a.QueueNumber > oldQueue)
+                    .OrderBy(a => a.QueueNumber)
+                    .ToList();
+
+                appointment.Status = AppointmentStatus.Cancelled;
+
+                //await _patientNotificationService.SendStatusAsync(appointment, null);
+
                 var archiveAppointment = await _unitOfWork.Reposit<AppointmentArchive>()
-                    .GetEntityWithSpec(new AppointmentArchiveByAppointmentIdSpecification(appointment.Id));
+                   .GetEntityWithSpec(new AppointmentArchiveByAppointmentIdSpecification(appointment.Id));
 
                 if (archiveAppointment != null)
                     _unitOfWork.Reposit<AppointmentArchive>().Delete(archiveAppointment);
@@ -331,8 +444,43 @@ namespace Clinic.Service
                 _unitOfWork.Reposit<Appointment>().Delete(appointment);
 
                 await _unitOfWork.CompleteAsync();
+
+                int newQueue = oldQueue;
+                DateTime currentTime = oldEstimated.Value;
+
+
+                foreach (var appt in affectedAppointments)
+                {
+                    var archiveAppt = await _unitOfWork.Reposit<AppointmentArchive>()
+                    .GetEntityWithSpec(new AppointmentArchiveByAppointmentIdSpecification(appt.Id));
+
+                    if (archiveAppt != null)
+                    {
+                        archiveAppt.QueueNumber = appt.QueueNumber;
+                        archiveAppt.EstimatedTime = appt.EstimatedTime;
+                        archiveAppt.Status = AppointmentStatus.Rescheduled; 
+                        archiveAppt.Date = appt.Date;
+                        _unitOfWork.Reposit<AppointmentArchive>().Update(archiveAppt);
+                    }
+
+                    appt.QueueNumber = newQueue++;
+                    appt.EstimatedTime = currentTime;
+                    appt.Status = AppointmentStatus.Rescheduled; 
+
+                    currentTime = currentTime.AddMinutes(_settings.MinutesPerCase);
+                    _unitOfWork.Reposit<Appointment>().Update(appt);
+                }
+
+                foreach (var appt in affectedAppointments)
+                {
+                    await _patientNotificationService.SendStatusAsync(appt, null);
+                }
+
+
+                await _unitOfWork.CompleteAsync();
                 await transaction.CommitAsync();
 
+              
                 return _mapper.Map<AppointmentDto>(appointment);
             }
             catch
@@ -340,18 +488,106 @@ namespace Clinic.Service
                 await transaction.RollbackAsync();
                 throw;
             }
+
+
         }
 
 
+        public async Task<int> GetTotalPatientsCountAsync()
+        {
+            var patients = await _unitOfWork.Reposit<Patient>().ListAllAsync();
+            return patients.Count;
+        }
 
 
+        // Helpers
 
-        // for name filtering
         private string NormalizeName(string name)
         {
             return string.Join(" ",
                 name.Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries)
             );
         }
+
+
+
+        private static string NormalizePhone(string phone)
+        {
+            var digits = new string(phone.Where(char.IsDigit).ToArray());
+            if (digits.StartsWith("20") && digits.Length == 12)
+                digits = "0" + digits[2..];
+            return digits;
+        }
+
+
+
+
+        //private static string HashToken(string rawToken)
+        //{
+        //    var bytes = System.Security.Cryptography.SHA256.HashData(
+        //        System.Text.Encoding.UTF8.GetBytes(rawToken));
+        //    return Convert.ToHexString(bytes);
+        //}
+
+
+
+
+        private async Task<(Patient patient, string? newRawToken)> ResolvePatientAndSessionAsync(string phone, string normalizedName, string? incomingToken)
+        {
+            var patient = await _unitOfWork.Reposit<Patient>()
+                .GetEntityWithSpec(new PatientByPhoneSpecification(phone));
+
+            if (patient == null)
+            {
+                patient = new Patient { Phone = phone, Name = normalizedName, CreatedAt = DateTime.UtcNow };
+                await _unitOfWork.Reposit<Patient>().AddAsync(patient);
+                await _unitOfWork.CompleteAsync();
+            }
+
+            //if (!string.IsNullOrWhiteSpace(incomingToken))
+            //{
+            //    var hash = HashToken(incomingToken);
+            //    var existingSession = await _unitOfWork.Reposit<PatientSession>()
+            //        .GetEntityWithSpec(new ActiveSessionByTokenHashAndPatientSpecification(hash, patient.Id));
+
+            //    if (existingSession != null)
+            //    {
+            //        existingSession.LastSeenAt = DateTime.UtcNow;
+            //        _unitOfWork.Reposit<PatientSession>().Update(existingSession);
+            //        return (patient, null);
+            //    }
+            //}
+
+            var resolvedFromToken = await _patientSessionResolver.ResolveAsync(incomingToken);
+            if (resolvedFromToken != null && resolvedFromToken.Id == patient.Id)
+            {
+                return (patient, null);
+            }
+
+            var rawToken = Guid.NewGuid().ToString("N") + Guid.NewGuid().ToString("N");
+            var session = new PatientSession
+            {
+                PatientId = patient.Id,
+                TokenHash = TokenHasher.Hash(rawToken),
+                CreatedAt = DateTime.UtcNow,
+                LastSeenAt = DateTime.UtcNow
+            };
+            await _unitOfWork.Reposit<PatientSession>().AddAsync(session);
+
+            return (patient, rawToken);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 }

@@ -44,7 +44,7 @@ namespace Clinic.Repo.Migrations
                     b.Property<DateTime?>("EstimatedTime")
                         .HasColumnType("timestamptz");
 
-                    b.Property<int>("PatientId")
+                    b.Property<int?>("PatientId")
                         .HasColumnType("integer");
 
                     b.Property<string>("PatientName")
@@ -91,7 +91,7 @@ namespace Clinic.Repo.Migrations
                     b.Property<DateTime?>("EstimatedTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("PatientId")
+                    b.Property<int?>("PatientId")
                         .HasColumnType("integer");
 
                     b.Property<string>("PatientName")
@@ -110,8 +110,6 @@ namespace Clinic.Repo.Migrations
 
                     b.HasIndex("AppointmentId")
                         .IsUnique();
-
-                    b.HasIndex("PatientId");
 
                     b.ToTable("AppointmentArchives", (string)null);
                 });
@@ -284,7 +282,7 @@ namespace Clinic.Repo.Migrations
                     b.ToTable("Notifications", (string)null);
                 });
 
-            modelBuilder.Entity("Clinic.Domain.Entities.Patient", b =>
+            modelBuilder.Entity("Clinic.Domain.Entities.Patient_Notifications.Patient", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -297,15 +295,132 @@ namespace Clinic.Repo.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.Property<string>("Phone")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Patient");
+                    b.HasIndex("Phone")
+                        .IsUnique();
+
+                    b.ToTable("Patients", (string)null);
+                });
+
+            modelBuilder.Entity("Clinic.Domain.Entities.Patient_Notifications.PatientNotification", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("AppointmentArchiveId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<int>("PatientId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("ReadAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppointmentArchiveId");
+
+                    b.HasIndex("PatientId", "CreatedAt");
+
+                    b.HasIndex("PatientId", "IsRead");
+
+                    b.ToTable("PatientNotifications", (string)null);
+                });
+
+            modelBuilder.Entity("Clinic.Domain.Entities.Patient_Notifications.PatientSession", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("LastSeenAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("PatientId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("TokenHash")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PatientId");
+
+                    b.HasIndex("TokenHash")
+                        .IsUnique();
+
+                    b.ToTable("PatientSessions", (string)null);
+                });
+
+            modelBuilder.Entity("Clinic.Domain.Entities.Patient_Notifications.PushSubscription", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Auth")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Endpoint")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("P256dh")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("PatientId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PatientId");
+
+                    b.ToTable("PushSubscriptions");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -442,13 +557,9 @@ namespace Clinic.Repo.Migrations
 
             modelBuilder.Entity("Clinic.Domain.Entities.Appointment", b =>
                 {
-                    b.HasOne("Clinic.Domain.Entities.Patient", "Patient")
+                    b.HasOne("Clinic.Domain.Entities.Patient_Notifications.Patient", null)
                         .WithMany("Appointments")
-                        .HasForeignKey("PatientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Patient");
+                        .HasForeignKey("PatientId");
                 });
 
             modelBuilder.Entity("Clinic.Domain.Entities.AppointmentArchive", b =>
@@ -458,15 +569,7 @@ namespace Clinic.Repo.Migrations
                         .HasForeignKey("Clinic.Domain.Entities.AppointmentArchive", "AppointmentId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("Clinic.Domain.Entities.Patient", "Patient")
-                        .WithMany()
-                        .HasForeignKey("PatientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Appointment");
-
-                    b.Navigation("Patient");
                 });
 
             modelBuilder.Entity("Clinic.Domain.Entities.Notification", b =>
@@ -481,6 +584,46 @@ namespace Clinic.Repo.Migrations
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Appointment");
+                });
+
+            modelBuilder.Entity("Clinic.Domain.Entities.Patient_Notifications.PatientNotification", b =>
+                {
+                    b.HasOne("Clinic.Domain.Entities.AppointmentArchive", "AppointmentArchive")
+                        .WithMany()
+                        .HasForeignKey("AppointmentArchiveId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("Clinic.Domain.Entities.Patient_Notifications.Patient", "Patient")
+                        .WithMany()
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppointmentArchive");
+
+                    b.Navigation("Patient");
+                });
+
+            modelBuilder.Entity("Clinic.Domain.Entities.Patient_Notifications.PatientSession", b =>
+                {
+                    b.HasOne("Clinic.Domain.Entities.Patient_Notifications.Patient", "Patient")
+                        .WithMany()
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Patient");
+                });
+
+            modelBuilder.Entity("Clinic.Domain.Entities.Patient_Notifications.PushSubscription", b =>
+                {
+                    b.HasOne("Clinic.Domain.Entities.Patient_Notifications.Patient", "Patient")
+                        .WithMany()
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Patient");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -547,7 +690,7 @@ namespace Clinic.Repo.Migrations
                     b.Navigation("Notifications");
                 });
 
-            modelBuilder.Entity("Clinic.Domain.Entities.Patient", b =>
+            modelBuilder.Entity("Clinic.Domain.Entities.Patient_Notifications.Patient", b =>
                 {
                     b.Navigation("Appointments");
                 });

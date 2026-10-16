@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Clinic.Domain.Entities.Enums;
+using Clinic.Domain.Entities.Patient_Notifications;
 
 namespace Clinic.Domain.Entities
 {
     public class AppointmentArchive : BaseEntity
     {
-        public int PatientId { get; set; }
-        public Patient Patient { get; set; } = null!;
+        public int? PatientId { get; set; }
         public DateTime? Date { get; set; }
         public int QueueNumber { get; set; }
         public DateTime? EstimatedTime { get; set; }

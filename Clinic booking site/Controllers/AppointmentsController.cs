@@ -47,5 +47,22 @@ namespace Clinic_booking_site.Controllers
         }
 
 
+
+        [HttpGet("patients/count")]
+        [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+        public async Task<ActionResult<int>> GetTotalPatientsCount()
+        {
+            try
+            {
+                var count = await _bookingService.GetTotalPatientsCountAsync();
+                return Ok(count);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "حدث خطأ أثناء جلب عدد المرضى", error = ex.Message });
+            }
+        }
+
+
     }
 }

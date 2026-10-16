@@ -13,5 +13,8 @@ namespace Clinic.Domain.DTOs
         public string Phone { get; set; } = null!;
         public DateTime BookingDate { get; set; }
         public AppointmentType AppointmentType { get; set; }
+
+
+        public string? PatientToken { get; set; }
     }
 }

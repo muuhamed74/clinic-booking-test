@@ -5,7 +5,9 @@ using Clinic.Repo.Data;
 using Clinic.Repo.Repositories;
 using Clinic.Service;
 using Clinic.Service.Notifications_Providers;
+using Clinic.Service.Patien_Notofcations;
 using Clinic_booking_site.Helpers.Hangfire;
+using Clinic_booking_site.Helpers.Hashing;
 using Hangfire;
 using Hangfire.PostgreSql;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -47,6 +49,9 @@ namespace Clinic_booking_site.Extinsions
             //services.AddScoped<ReminderJob>();
             services.AddScoped<NotificationDispatchJob>();
 
+            // Local Notification Provider
+            services.AddScoped<IPatientNotificationService, PatientNotificationService>();
+            services.AddScoped<IPatientSessionResolver, PatientSessionResolver>();
 
 
             services.AddScoped<Iwpsenderservice, wpsenderservice>();

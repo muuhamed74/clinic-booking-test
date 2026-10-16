@@ -1,6 +1,7 @@
 
 using Clinic.Domain.Entities;
 using Clinic.Repo.Data;
+using Clinic.Service.Hubs;
 using Clinic_booking_site.Extinsions;
 using Clinic_booking_site.Helpers.Errors;
 using Clinic_booking_site.Helpers.Hangfire;
@@ -31,7 +32,7 @@ namespace Clinic_booking_site
             {
                 options.WorkerCount = 10;
             });
-
+            builder.Services.AddSignalR();
 
 
 
@@ -72,12 +73,14 @@ namespace Clinic_booking_site
 
             var app = builder.Build();
 
-
+            app.MapHub<NotificationHub>("/hubs/notifications");
 
 
             app.UseHangfireDashboard();
 
             var egyptZone = TimeZoneInfo.FindSystemTimeZoneById("Egypt Standard Time");
+
+            #region background jobs
 
             // Schedule Recurring Jobs
             //RecurringJob.AddOrUpdate<ReminderJob>(
@@ -95,16 +98,20 @@ namespace Clinic_booking_site
 
             // Dispatch Pending Notifications Job
 
-           RecurringJob.AddOrUpdate<NotificationDispatchJob>(  
-           recurringJobId: "DispatchPendingNotifications",
-           methodCall: job => job.DispatchPendingNotificationsAsync(),
-           cronExpression: Cron.Minutely,
-           options: new RecurringJobOptions
-           { 
-               TimeZone = egyptZone
-           },
-               queue: "default"
-            );
+            //RecurringJob.AddOrUpdate<NotificationDispatchJob>(  
+            //recurringJobId: "DispatchPendingNotifications",
+            //methodCall: job => job.DispatchPendingNotificationsAsync(),
+            //cronExpression: Cron.Minutely,
+            //options: new RecurringJobOptions
+            //{ 
+            //    TimeZone = egyptZone
+            //},
+            //    queue: "default"
+            // );
+
+            #endregion
+
+
 
 
             //seeding admin and roles

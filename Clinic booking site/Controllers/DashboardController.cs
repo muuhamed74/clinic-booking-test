@@ -160,6 +160,20 @@ namespace Clinic_booking_site.Controllers
         }
 
 
+        [Authorize(Roles = "Admin")]
+        [HttpPut("reschedule-clinic-day")]
+        public async Task<IActionResult> RescheduleClinicDay([FromBody] RescheduleClinicDayRequestDto requestDto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(new { message = "Invalid data" });
+
+            var result = await _adminService.RescheduleClinicDayAsync(requestDto);
+
+            return Ok(new
+            {
+                Message = $"تم تأجيل مواعيد العيادة من يوم {requestDto.OldDate:yyyy-MM-dd} إلى يوم {requestDto.NewDate:yyyy-MM-dd} بنجاح وإرسال الإشعارات للمرضى."
+            });
+        }
 
     }
 }

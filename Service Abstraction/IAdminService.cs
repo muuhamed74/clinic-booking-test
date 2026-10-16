@@ -18,6 +18,9 @@ namespace Service_Abstraction
         Task<AppointmentDto> RescheduleAppointmentToAnotherDayAsync(RescheduleAppointmentRequestDto requestDto);
         Task<BookingOverrideDto> UpsertBookingOverrideAsync(BookingOverrideDto request);
         Task CloseClinicDayAsync(ChangeClinicDayStatusDto request);
-        Task ToggleClinicDayStatusAsync(ChangeClinicDayStatusDto request); 
+        Task ToggleClinicDayStatusAsync(ChangeClinicDayStatusDto request);
+
+
+        Task<bool> RescheduleClinicDayAsync(RescheduleClinicDayRequestDto requestDto);
     }
 }
