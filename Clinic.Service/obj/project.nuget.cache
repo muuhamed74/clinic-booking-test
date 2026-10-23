@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "BbH5axGWXSs=",
+  "dgSpecHash": "+lLtljaJ/Gc=",
   "success": true,
-  "projectFilePath": "E:\\Coding\\Clinic booking site\\Clinic.Service\\Clinic.Service.csproj",
+  "projectFilePath": "D:\\Amira test\\Clinic booking site\\Clinic.Service\\Clinic.Service.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\MSI P M T\\.nuget\\packages\\automapper\\15.0.1\\automapper.15.0.1.nupkg.sha512",
     "C:\\Users\\MSI P M T\\.nuget\\packages\\microsoft.aspnetcore.authentication.abstractions\\2.2.0\\microsoft.aspnetcore.authentication.abstractions.2.2.0.nupkg.sha512",
@@ -163,22 +163,10 @@
       "code": "NU1903",
       "level": "Warning",
       "message": "Package 'AutoMapper' 15.0.1 has a known high severity vulnerability, https://github.com/advisories/GHSA-rvv3-g6hj-g44x",
-      "projectPath": "E:\\Coding\\Clinic booking site\\Clinic.Service\\Clinic.Service.csproj",
+      "projectPath": "D:\\Amira test\\Clinic booking site\\Clinic.Service\\Clinic.Service.csproj",
       "warningLevel": 1,
-      "filePath": "E:\\Coding\\Clinic booking site\\Clinic.Service\\Clinic.Service.csproj",
+      "filePath": "D:\\Amira test\\Clinic booking site\\Clinic.Service\\Clinic.Service.csproj",
       "libraryId": "AutoMapper",
-      "targetGraphs": [
-        "net8.0"
-      ]
-    },
-    {
-      "code": "NU1903",
-      "level": "Warning",
-      "message": "Package 'Microsoft.AspNetCore.SignalR.Core' 1.2.13 has a known high severity vulnerability, https://github.com/advisories/GHSA-334f-vvp4-7g6p",
-      "projectPath": "E:\\Coding\\Clinic booking site\\Clinic.Service\\Clinic.Service.csproj",
-      "warningLevel": 1,
-      "filePath": "E:\\Coding\\Clinic booking site\\Clinic.Service\\Clinic.Service.csproj",
-      "libraryId": "Microsoft.AspNetCore.SignalR.Core",
       "targetGraphs": [
         "net8.0"
       ]

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Coding\\Clinic booking site\\Clinic.Domain\\Clinic.Domain.csproj": {}
+    "D:\\Amira test\\Clinic booking site\\Clinic.Domain\\Clinic.Domain.csproj": {}
   },
   "projects": {
-    "E:\\Coding\\Clinic booking site\\Clinic.Domain\\Clinic.Domain.csproj": {
+    "D:\\Amira test\\Clinic booking site\\Clinic.Domain\\Clinic.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Coding\\Clinic booking site\\Clinic.Domain\\Clinic.Domain.csproj",
+        "projectUniqueName": "D:\\Amira test\\Clinic booking site\\Clinic.Domain\\Clinic.Domain.csproj",
         "projectName": "Clinic.Domain",
-        "projectPath": "E:\\Coding\\Clinic booking site\\Clinic.Domain\\Clinic.Domain.csproj",
+        "projectPath": "D:\\Amira test\\Clinic booking site\\Clinic.Domain\\Clinic.Domain.csproj",
         "packagesPath": "C:\\Users\\MSI P M T\\.nuget\\packages\\",
-        "outputPath": "E:\\Coding\\Clinic booking site\\Clinic.Domain\\obj\\",
+        "outputPath": "D:\\Amira test\\Clinic booking site\\Clinic.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

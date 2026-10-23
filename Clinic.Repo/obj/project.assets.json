@@ -4290,11 +4290,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\Coding\\Clinic booking site\\Clinic.Repo\\Clinic.Repo.csproj",
+      "projectUniqueName": "D:\\Amira test\\Clinic booking site\\Clinic.Repo\\Clinic.Repo.csproj",
       "projectName": "Clinic.Repo",
-      "projectPath": "E:\\Coding\\Clinic booking site\\Clinic.Repo\\Clinic.Repo.csproj",
+      "projectPath": "D:\\Amira test\\Clinic booking site\\Clinic.Repo\\Clinic.Repo.csproj",
       "packagesPath": "C:\\Users\\MSI P M T\\.nuget\\packages\\",
-      "outputPath": "E:\\Coding\\Clinic booking site\\Clinic.Repo\\obj\\",
+      "outputPath": "D:\\Amira test\\Clinic booking site\\Clinic.Repo\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -4316,8 +4316,8 @@
           "framework": "net8.0",
           "targetAlias": "net8.0",
           "projectReferences": {
-            "E:\\Coding\\Clinic booking site\\Clinic.Domain\\Clinic.Domain.csproj": {
-              "projectPath": "E:\\Coding\\Clinic booking site\\Clinic.Domain\\Clinic.Domain.csproj"
+            "D:\\Amira test\\Clinic booking site\\Clinic.Domain\\Clinic.Domain.csproj": {
+              "projectPath": "D:\\Amira test\\Clinic booking site\\Clinic.Domain\\Clinic.Domain.csproj"
             }
           }
         }

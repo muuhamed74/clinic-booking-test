@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Coding\\Clinic booking site\\Service Abstraction\\Service Abstraction.csproj": {}
+    "D:\\Amira test\\Clinic booking site\\Service Abstraction\\Service Abstraction.csproj": {}
   },
   "projects": {
-    "E:\\Coding\\Clinic booking site\\Clinic.Domain\\Clinic.Domain.csproj": {
+    "D:\\Amira test\\Clinic booking site\\Clinic.Domain\\Clinic.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Coding\\Clinic booking site\\Clinic.Domain\\Clinic.Domain.csproj",
+        "projectUniqueName": "D:\\Amira test\\Clinic booking site\\Clinic.Domain\\Clinic.Domain.csproj",
         "projectName": "Clinic.Domain",
-        "projectPath": "E:\\Coding\\Clinic booking site\\Clinic.Domain\\Clinic.Domain.csproj",
+        "projectPath": "D:\\Amira test\\Clinic booking site\\Clinic.Domain\\Clinic.Domain.csproj",
         "packagesPath": "C:\\Users\\MSI P M T\\.nuget\\packages\\",
-        "outputPath": "E:\\Coding\\Clinic booking site\\Clinic.Domain\\obj\\",
+        "outputPath": "D:\\Amira test\\Clinic booking site\\Clinic.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -81,14 +81,14 @@
         }
       }
     },
-    "E:\\Coding\\Clinic booking site\\Service Abstraction\\Service Abstraction.csproj": {
+    "D:\\Amira test\\Clinic booking site\\Service Abstraction\\Service Abstraction.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Coding\\Clinic booking site\\Service Abstraction\\Service Abstraction.csproj",
+        "projectUniqueName": "D:\\Amira test\\Clinic booking site\\Service Abstraction\\Service Abstraction.csproj",
         "projectName": "Service Abstraction",
-        "projectPath": "E:\\Coding\\Clinic booking site\\Service Abstraction\\Service Abstraction.csproj",
+        "projectPath": "D:\\Amira test\\Clinic booking site\\Service Abstraction\\Service Abstraction.csproj",
         "packagesPath": "C:\\Users\\MSI P M T\\.nuget\\packages\\",
-        "outputPath": "E:\\Coding\\Clinic booking site\\Service Abstraction\\obj\\",
+        "outputPath": "D:\\Amira test\\Clinic booking site\\Service Abstraction\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -110,8 +110,8 @@
             "framework": "net8.0",
             "targetAlias": "net8.0",
             "projectReferences": {
-              "E:\\Coding\\Clinic booking site\\Clinic.Domain\\Clinic.Domain.csproj": {
-                "projectPath": "E:\\Coding\\Clinic booking site\\Clinic.Domain\\Clinic.Domain.csproj"
+              "D:\\Amira test\\Clinic booking site\\Clinic.Domain\\Clinic.Domain.csproj": {
+                "projectPath": "D:\\Amira test\\Clinic booking site\\Clinic.Domain\\Clinic.Domain.csproj"
               }
             }
           }

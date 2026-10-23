@@ -359,9 +359,14 @@ namespace Clinic.Service
         public async Task<AppointmentDto?> GetAppointmentByPhoneAsync(string phoneNumber, DateTime date)
         {
             TimeZoneInfo egyptZone = TimeZoneInfo.FindSystemTimeZoneById("Africa/Cairo");
-            DateTime dateUtc = DateTime.SpecifyKind(date.Date, DateTimeKind.Utc);
+            //DateTime dateUtc = DateTime.SpecifyKind(date.Date, DateTimeKind.Utc);
+            DateTime localStartDate = new DateTime(date.Year, date.Month, date.Day, 0, 0, 0, DateTimeKind.Unspecified);
 
-            var spec = new AppointmentByDateAndPhoneSpecification(phoneNumber, dateUtc);
+            //var spec = new AppointmentByDateAndPhoneSpecification(phoneNumber, dateUtc);
+            DateTime utcStart = TimeZoneInfo.ConvertTimeToUtc(localStartDate, egyptZone);
+            DateTime utcEnd = utcStart.AddDays(1);
+
+            var spec = new AppointmentByDateAndPhoneSpecification(phoneNumber, utcStart, utcEnd);
             var appointment = await _unitOfWork.Reposit<Appointment>().GetEntityWithSpec(spec);
             var dto = _mapper.Map<AppointmentDto?>(appointment);
             return dto ?? throw new KeyNotFoundException("لا يوجد حجز بهذا الرقم في هذا اليوم.");
@@ -371,9 +376,22 @@ namespace Clinic.Service
 
         public async Task<AppointmentDto> CancelByPatientAsync(string phone, DateTime date)
         {
-            var dateUtc = DateTime.SpecifyKind(date.Date, DateTimeKind.Utc);
 
-            var spec = new AppointmentByDateAndPhoneSpecification(phone, dateUtc);
+            //var dateUtc = DateTime.SpecifyKind(date.Date, DateTimeKind.Utc);
+            TimeZoneInfo egyptZone = TimeZoneInfo.FindSystemTimeZoneById("Africa/Cairo");
+            DateTime localStart = new DateTime(date.Year, date.Month, date.Day, 0, 0, 0, DateTimeKind.Unspecified);
+            DateTime utcStart = TimeZoneInfo.ConvertTimeToUtc(localStart, egyptZone);
+            DateTime utcEnd = utcStart.AddDays(1);
+
+
+
+
+
+
+
+
+
+            var spec = new AppointmentForCancellationSpecification(phone, utcStart, utcEnd);
             var appointment = await _unitOfWork.Reposit<Appointment>().GetEntityWithSpec(spec);
 
             if (appointment == null)
@@ -408,7 +426,7 @@ namespace Clinic.Service
                 var oldQueue = appointment.QueueNumber;
                 var oldEstimated = appointment.EstimatedTime;
 
-                var egyptZone = TimeZoneInfo.FindSystemTimeZoneById("Africa/Cairo");
+                //var egyptZone = TimeZoneInfo.FindSystemTimeZoneById("Africa/Cairo");
                 var appointmentDate = TimeZoneInfo.ConvertTimeFromUtc(appointment.EstimatedTime.Value, egyptZone).Date;
 
                 var allAppointmentsToday = await _unitOfWork.Reposit<Appointment>()
