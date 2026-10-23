@@ -14,19 +14,3 @@ E:\Coding\Clinic booking site\Service Abstraction\obj\Debug\net8.0\Service Abstr
 E:\Coding\Clinic booking site\Service Abstraction\obj\Debug\net8.0\refint\Service Abstraction.dll
 E:\Coding\Clinic booking site\Service Abstraction\obj\Debug\net8.0\Service Abstraction.pdb
 E:\Coding\Clinic booking site\Service Abstraction\obj\Debug\net8.0\ref\Service Abstraction.dll
-D:\Amira test\Clinic booking site\Service Abstraction\bin\Debug\net8.0\Service Abstraction.deps.json
-D:\Amira test\Clinic booking site\Service Abstraction\bin\Debug\net8.0\Service Abstraction.dll
-D:\Amira test\Clinic booking site\Service Abstraction\bin\Debug\net8.0\Service Abstraction.pdb
-D:\Amira test\Clinic booking site\Service Abstraction\bin\Debug\net8.0\Clinic.Domain.dll
-D:\Amira test\Clinic booking site\Service Abstraction\bin\Debug\net8.0\Clinic.Domain.pdb
-D:\Amira test\Clinic booking site\Service Abstraction\obj\Debug\net8.0\Service Abstraction.csproj.AssemblyReference.cache
-D:\Amira test\Clinic booking site\Service Abstraction\obj\Debug\net8.0\Service Abstraction.GeneratedMSBuildEditorConfig.editorconfig
-D:\Amira test\Clinic booking site\Service Abstraction\obj\Debug\net8.0\Service Abstraction.AssemblyInfoInputs.cache
-D:\Amira test\Clinic booking site\Service Abstraction\obj\Debug\net8.0\Service Abstraction.AssemblyInfo.cs
-D:\Amira test\Clinic booking site\Service Abstraction\obj\Debug\net8.0\Service Abstraction.csproj.CoreCompileInputs.cache
-D:\Amira test\Clinic booking site\Service Abstraction\obj\Debug\net8.0\Service Abstraction.sourcelink.json
-D:\Amira test\Clinic booking site\Service Abstraction\obj\Debug\net8.0\Service .9D489B17.Up2Date
-D:\Amira test\Clinic booking site\Service Abstraction\obj\Debug\net8.0\Service Abstraction.dll
-D:\Amira test\Clinic booking site\Service Abstraction\obj\Debug\net8.0\refint\Service Abstraction.dll
-D:\Amira test\Clinic booking site\Service Abstraction\obj\Debug\net8.0\Service Abstraction.pdb
-D:\Amira test\Clinic booking site\Service Abstraction\obj\Debug\net8.0\ref\Service Abstraction.dll

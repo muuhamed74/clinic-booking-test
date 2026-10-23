@@ -11,12 +11,12 @@ namespace Clinic.Domain.Specifications.Clinic.Specifications
 {
     public class AppointmentByDateAndPhoneSpecification : BaseSpecification<Appointment>
     {
-        public AppointmentByDateAndPhoneSpecification(string phone, DateTime utcStart, DateTime utcEnd  )
+        public AppointmentByDateAndPhoneSpecification(string phone, DateTime utcDate)
          : base(a => a.Date.HasValue &&
-               a.Date.Value >= utcStart &&
-               a.Date.Value < utcEnd &&
-               a.Status != AppointmentStatus.Cancelled &&
-               a.Phone == phone)
+                a.Date.Value >= DateTime.SpecifyKind(utcDate.Date, DateTimeKind.Utc) &&
+                a.Date.Value < DateTime.SpecifyKind(utcDate.Date.AddDays(1), DateTimeKind.Utc) &&
+                a.Status != AppointmentStatus.Cancelled &&
+                a.Phone == phone)
         {
         }
     }

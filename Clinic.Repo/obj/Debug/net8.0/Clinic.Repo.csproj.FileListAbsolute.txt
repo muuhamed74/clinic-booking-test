@@ -16,21 +16,3 @@ E:\Coding\Clinic booking site\Clinic.Repo\obj\Debug\net8.0\refint\Clinic.Repo.dl
 E:\Coding\Clinic booking site\Clinic.Repo\obj\Debug\net8.0\Clinic.Repo.pdb
 E:\Coding\Clinic booking site\Clinic.Repo\obj\Debug\net8.0\Clinic.Repo.genruntimeconfig.cache
 E:\Coding\Clinic booking site\Clinic.Repo\obj\Debug\net8.0\ref\Clinic.Repo.dll
-D:\Amira test\Clinic booking site\Clinic.Repo\bin\Debug\net8.0\Clinic.Repo.deps.json
-D:\Amira test\Clinic booking site\Clinic.Repo\bin\Debug\net8.0\Clinic.Repo.runtimeconfig.json
-D:\Amira test\Clinic booking site\Clinic.Repo\bin\Debug\net8.0\Clinic.Repo.dll
-D:\Amira test\Clinic booking site\Clinic.Repo\bin\Debug\net8.0\Clinic.Repo.pdb
-D:\Amira test\Clinic booking site\Clinic.Repo\bin\Debug\net8.0\Clinic.Domain.dll
-D:\Amira test\Clinic booking site\Clinic.Repo\bin\Debug\net8.0\Clinic.Domain.pdb
-D:\Amira test\Clinic booking site\Clinic.Repo\obj\Debug\net8.0\Clinic.Repo.csproj.AssemblyReference.cache
-D:\Amira test\Clinic booking site\Clinic.Repo\obj\Debug\net8.0\Clinic.Repo.GeneratedMSBuildEditorConfig.editorconfig
-D:\Amira test\Clinic booking site\Clinic.Repo\obj\Debug\net8.0\Clinic.Repo.AssemblyInfoInputs.cache
-D:\Amira test\Clinic booking site\Clinic.Repo\obj\Debug\net8.0\Clinic.Repo.AssemblyInfo.cs
-D:\Amira test\Clinic booking site\Clinic.Repo\obj\Debug\net8.0\Clinic.Repo.csproj.CoreCompileInputs.cache
-D:\Amira test\Clinic booking site\Clinic.Repo\obj\Debug\net8.0\Clinic.Repo.sourcelink.json
-D:\Amira test\Clinic booking site\Clinic.Repo\obj\Debug\net8.0\Clinic.R.20D74A2B.Up2Date
-D:\Amira test\Clinic booking site\Clinic.Repo\obj\Debug\net8.0\Clinic.Repo.dll
-D:\Amira test\Clinic booking site\Clinic.Repo\obj\Debug\net8.0\refint\Clinic.Repo.dll
-D:\Amira test\Clinic booking site\Clinic.Repo\obj\Debug\net8.0\Clinic.Repo.pdb
-D:\Amira test\Clinic booking site\Clinic.Repo\obj\Debug\net8.0\Clinic.Repo.genruntimeconfig.cache
-D:\Amira test\Clinic booking site\Clinic.Repo\obj\Debug\net8.0\ref\Clinic.Repo.dll
