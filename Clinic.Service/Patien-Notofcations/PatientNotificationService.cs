@@ -175,11 +175,14 @@ namespace Clinic.Service.Patien_Notofcations
             #endregion
             var connectionIds = NotificationHub.GetConnections(notification.PatientId);
 
+            bool sentViaSignalR = false;
+
             if (connectionIds != null && connectionIds.Any())
             {
-                Console.WriteLine($"[Notification Debug] Patient {notification.PatientId} has active SignalR connections. Trying to send via SignalR...");
                 try
                 {
+                    Console.WriteLine($"[Notification Debug] Patient {notification.PatientId} has {connectionIds.Count} connection(s). Trying SignalR...");
+
                     foreach (var connId in connectionIds)
                     {
                         await _hubContext.Clients.Client(connId).SendAsync("ReceiveNotification", new
@@ -189,17 +192,20 @@ namespace Clinic.Service.Patien_Notofcations
                             notification.CreatedAt
                         });
                     }
-                    Console.WriteLine($"[Notification Debug] Successfully sent via SignalR.");
+
+                    sentViaSignalR = true;
+                    Console.WriteLine($"[Notification Success] Sent via SignalR successfully.");
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"[Notification Error] SignalR send failed: {ex.Message}. Falling back to WebPush...");
-                    await SendWebPushAsync(notification.PatientId, notification.Title, notification.Message);
+                    Console.WriteLine($"[Notification Warning] SignalR failed (Client might be offline): {ex.Message}. Falling back to WebPush...");
+                    sentViaSignalR = false;
                 }
             }
-            else
+
+            if (!sentViaSignalR)
             {
-                Console.WriteLine($"[Notification Debug] Patient {notification.PatientId} is offline (No SignalR connections). Sending via WebPush...");
+                Console.WriteLine($"[Notification Debug] Routing to WebPush for Patient {notification.PatientId}...");
                 await SendWebPushAsync(notification.PatientId, notification.Title, notification.Message);
             }
         }

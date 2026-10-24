@@ -32,8 +32,11 @@ namespace Clinic_booking_site
             {
                 options.WorkerCount = 10;
             });
-            builder.Services.AddSignalR();
-
+            builder.Services.AddSignalR(options =>
+            {
+                options.KeepAliveInterval = TimeSpan.FromSeconds(10); 
+                options.ClientTimeoutInterval = TimeSpan.FromSeconds(20); 
+            });
 
 
 

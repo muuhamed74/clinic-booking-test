@@ -3,16 +3,16 @@
   "WorkspaceRootPath": "D:\\Amira test\\Clinic booking site\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{5F4F6259-D5CA-4E27-BEF2-5E363C6E8666}|Clinic.Service\\Clinic.Service.csproj|d:\\amira test\\clinic booking site\\clinic.service\\patien-notofcations\\patientnotificationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5F4F6259-D5CA-4E27-BEF2-5E363C6E8666}|Clinic.Service\\Clinic.Service.csproj|solutionrelative:clinic.service\\patien-notofcations\\patientnotificationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{3EC954EC-55AC-4236-91D5-13F5C118A0B3}|Clinic.Domain\\Clinic.Domain.csproj|d:\\amira test\\clinic booking site\\clinic.domain\\dtos\\pushsubscriptionrequestdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3EC954EC-55AC-4236-91D5-13F5C118A0B3}|Clinic.Domain\\Clinic.Domain.csproj|solutionrelative:clinic.domain\\dtos\\pushsubscriptionrequestdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{6AD5E23C-73A1-4F4C-8E55-2DAF9E0CE2DE}|Clinic booking site\\Clinic booking site.csproj|d:\\amira test\\clinic booking site\\clinic booking site\\controllers\\notificationscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{6AD5E23C-73A1-4F4C-8E55-2DAF9E0CE2DE}|Clinic booking site\\Clinic booking site.csproj|solutionrelative:clinic booking site\\controllers\\notificationscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3EC954EC-55AC-4236-91D5-13F5C118A0B3}|Clinic.Domain\\Clinic.Domain.csproj|d:\\amira test\\clinic booking site\\clinic.domain\\specifications\\clinic.specifications\\patient-notifiacations-specs\\pushsubscriptionsbypatientspecification.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3EC954EC-55AC-4236-91D5-13F5C118A0B3}|Clinic.Domain\\Clinic.Domain.csproj|solutionrelative:clinic.domain\\specifications\\clinic.specifications\\patient-notifiacations-specs\\pushsubscriptionsbypatientspecification.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{5F4F6259-D5CA-4E27-BEF2-5E363C6E8666}|Clinic.Service\\Clinic.Service.csproj|d:\\amira test\\clinic booking site\\clinic.service\\bookingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -31,10 +31,6 @@
       "RelativeMoniker": "D:0:0:{5F4F6259-D5CA-4E27-BEF2-5E363C6E8666}|Clinic.Service\\Clinic.Service.csproj|solutionrelative:clinic.service\\hubs\\notificationhub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{5F4F6259-D5CA-4E27-BEF2-5E363C6E8666}|Clinic.Service\\Clinic.Service.csproj|d:\\amira test\\clinic booking site\\clinic.service\\patien-notofcations\\patientnotificationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5F4F6259-D5CA-4E27-BEF2-5E363C6E8666}|Clinic.Service\\Clinic.Service.csproj|solutionrelative:clinic.service\\patien-notofcations\\patientnotificationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{6AD5E23C-73A1-4F4C-8E55-2DAF9E0CE2DE}|Clinic booking site\\Clinic booking site.csproj|d:\\amira test\\clinic booking site\\clinic booking site\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{6AD5E23C-73A1-4F4C-8E55-2DAF9E0CE2DE}|Clinic booking site\\Clinic booking site.csproj|solutionrelative:clinic booking site\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -50,11 +46,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 6,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 7,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\Amira test\\Clinic booking site\\Clinic booking site\\Program.cs",
               "RelativeDocumentMoniker": "Clinic booking site\\Program.cs",
@@ -66,8 +62,12 @@
               "IsPinned": true
             },
             {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "PushSubscriptionRequestDto.cs",
               "DocumentMoniker": "D:\\Amira test\\Clinic booking site\\Clinic.Domain\\DTOs\\PushSubscriptionRequestDto.cs",
               "RelativeDocumentMoniker": "Clinic.Domain\\DTOs\\PushSubscriptionRequestDto.cs",
@@ -80,7 +80,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "NotificationsController.cs",
               "DocumentMoniker": "D:\\Amira test\\Clinic booking site\\Clinic booking site\\Controllers\\NotificationsController.cs",
               "RelativeDocumentMoniker": "Clinic booking site\\Controllers\\NotificationsController.cs",
@@ -88,25 +88,7 @@
               "RelativeToolTip": "Clinic booking site\\Controllers\\NotificationsController.cs",
               "ViewState": "AgIAAF4AAAAAAAAAAAAqwF8AAABkAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-24T18:25:51.605Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "PushSubscriptionsByPatientSpecification.cs",
-              "DocumentMoniker": "D:\\Amira test\\Clinic booking site\\Clinic.Domain\\Specifications\\Clinic.Specifications\\Patient-Notifiacations-Specs\\PushSubscriptionsByPatientSpecification.cs",
-              "RelativeDocumentMoniker": "Clinic.Domain\\Specifications\\Clinic.Specifications\\Patient-Notifiacations-Specs\\PushSubscriptionsByPatientSpecification.cs",
-              "ToolTip": "D:\\Amira test\\Clinic booking site\\Clinic.Domain\\Specifications\\Clinic.Specifications\\Patient-Notifiacations-Specs\\PushSubscriptionsByPatientSpecification.cs",
-              "RelativeToolTip": "Clinic.Domain\\Specifications\\Clinic.Specifications\\Patient-Notifiacations-Specs\\PushSubscriptionsByPatientSpecification.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-24T18:25:22.815Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+              "WhenOpened": "2026-10-24T18:25:51.605Z"
             },
             {
               "$type": "Document",
@@ -118,8 +100,7 @@
               "RelativeToolTip": "Clinic.Service\\BookingService.cs",
               "ViewState": "AgIAACAAAAAAAAAAAAAQwBkAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-23T12:15:27.281Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-10-23T12:15:27.281Z"
             },
             {
               "$type": "Document",
@@ -135,15 +116,16 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 0,
               "Title": "PatientNotificationService.cs",
               "DocumentMoniker": "D:\\Amira test\\Clinic booking site\\Clinic.Service\\Patien-Notofcations\\PatientNotificationService.cs",
               "RelativeDocumentMoniker": "Clinic.Service\\Patien-Notofcations\\PatientNotificationService.cs",
               "ToolTip": "D:\\Amira test\\Clinic booking site\\Clinic.Service\\Patien-Notofcations\\PatientNotificationService.cs",
               "RelativeToolTip": "Clinic.Service\\Patien-Notofcations\\PatientNotificationService.cs",
-              "ViewState": "AgIAAGcAAAAAAAAAAAAuwIsAAAAOAAAAAAAAAA==",
+              "ViewState": "AgIAAMoAAAAAAAAAAAAiwPgAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-15T14:05:41.397Z"
+              "WhenOpened": "2026-10-15T14:05:41.397Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -171,7 +153,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 8,
               "Title": "TokenHasher.cs",
               "DocumentMoniker": "D:\\Amira test\\Clinic booking site\\Clinic.Service\\Hashing\\TokenHasher.cs",
               "RelativeDocumentMoniker": "Clinic.Service\\Hashing\\TokenHasher.cs",
