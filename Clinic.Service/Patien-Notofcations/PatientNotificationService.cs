@@ -15,6 +15,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Twilio.TwiML.Messaging;
 using WebPush;
 
 namespace Clinic.Service.Patien_Notofcations
@@ -151,22 +152,54 @@ namespace Clinic.Service.Patien_Notofcations
 
         public async Task DispatchNotificationAsync(PatientNotification notification)
         {
+            #region
+            //var connectionIds = NotificationHub.GetConnections(notification.PatientId);
+
+            //if (connectionIds != null && connectionIds.Any())
+            //{
+
+            //    foreach (var connId in connectionIds)
+            //    {
+            //        await _hubContext.Clients.Client(connId).SendAsync("ReceiveNotification", new
+            //        {
+            //            notification.Title,
+            //            notification.Message,
+            //            notification.CreatedAt
+            //        });
+            //    }
+            //}
+            //else
+            //{
+            //    await SendWebPushAsync(notification.PatientId, notification.Title, notification.Message);
+            //}
+            #endregion
             var connectionIds = NotificationHub.GetConnections(notification.PatientId);
 
             if (connectionIds != null && connectionIds.Any())
             {
-                foreach (var connId in connectionIds)
+                Console.WriteLine($"[Notification Debug] Patient {notification.PatientId} has active SignalR connections. Trying to send via SignalR...");
+                try
                 {
-                    await _hubContext.Clients.Client(connId).SendAsync("ReceiveNotification", new
+                    foreach (var connId in connectionIds)
                     {
-                        notification.Title,
-                        notification.Message,
-                        notification.CreatedAt
-                    });
+                        await _hubContext.Clients.Client(connId).SendAsync("ReceiveNotification", new
+                        {
+                            notification.Title,
+                            notification.Message,
+                            notification.CreatedAt
+                        });
+                    }
+                    Console.WriteLine($"[Notification Debug] Successfully sent via SignalR.");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"[Notification Error] SignalR send failed: {ex.Message}. Falling back to WebPush...");
+                    await SendWebPushAsync(notification.PatientId, notification.Title, notification.Message);
                 }
             }
             else
             {
+                Console.WriteLine($"[Notification Debug] Patient {notification.PatientId} is offline (No SignalR connections). Sending via WebPush...");
                 await SendWebPushAsync(notification.PatientId, notification.Title, notification.Message);
             }
         }
@@ -174,6 +207,7 @@ namespace Clinic.Service.Patien_Notofcations
 
         private async Task SendWebPushAsync(int patientId, string title, string message)
         {
+            #region
             var subscriptions = await _unitOfWork.Reposit<Clinic.Domain.Entities.Patient_Notifications.PushSubscription>()
                 .ListAsync(new PushSubscriptionsByPatientSpecification(patientId));
 
@@ -201,6 +235,51 @@ namespace Clinic.Service.Patien_Notofcations
                 catch (Exception)
                 {
                 }
+            }
+            #endregion
+            try
+            {
+                var webPushSubscriptions = await _unitOfWork.Reposit<Clinic.Domain.Entities.Patient_Notifications.PushSubscription>()
+                    .ListAsync(new PushSubscriptionsByPatientSpecification(patientId));
+
+                if (!webPushSubscriptions.Any())
+                {
+                    Console.WriteLine($"[WebPush Debug] No push subscriptions found in DB for PatientId: {patientId}");
+                    return;
+                }
+
+                var publicKey = _configuration["VapidKeys:PublicKey"];
+                var privateKey = _configuration["VapidKeys:PrivateKey"];
+                var subjectKey = _configuration["VapidKeys:Subject"];
+
+                if (string.IsNullOrEmpty(publicKey) || string.IsNullOrEmpty(privateKey))
+                {
+                    Console.WriteLine("[WebPush Error] VAPID Keys are missing in configuration!");
+                    return;
+                }
+
+                var vapidObj = new VapidDetails(subjectKey, publicKey, privateKey);
+                var pushClient = new WebPushClient();
+
+                var jsonPayload = System.Text.Json.JsonSerializer.Serialize(new { title, body = message });
+
+                foreach (var subItem in webPushSubscriptions)
+                {
+                    try
+                    {
+                        var pushSub = new WebPush.PushSubscription(subItem.Endpoint, subItem.P256dh, subItem.Auth);
+                        await pushClient.SendNotificationAsync(pushSub, jsonPayload, vapidObj);
+                        Console.WriteLine($"[WebPush Success] Push notification sent successfully to endpoint: {subItem.Endpoint}");
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"[WebPush Sub Error] Failed for endpoint {subItem.Endpoint}: {ex.Message}");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[WebPush General Error]: {ex.Message}");
             }
         }
 
