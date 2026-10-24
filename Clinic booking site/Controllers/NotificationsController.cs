@@ -1,4 +1,5 @@
-﻿using Clinic.Domain.Entities.Patient_Notifications;
+﻿using Clinic.Domain.DTOs;
+using Clinic.Domain.Entities.Patient_Notifications;
 using Clinic.Domain.Repositories;
 using Clinic.Domain.Specifications.Clinic.Specifications.Patient_Notifiacations_Specs;
 using Microsoft.AspNetCore.Http;
@@ -90,5 +91,50 @@ namespace Clinic_booking_site.Controllers
             await _unitOfWork.CompleteAsync();
             return NoContent();
         }
+
+        [HttpPost("subscribe")]
+        public async Task<IActionResult> SaveSubscription([FromBody] PushSubscriptionRequestDto dto)
+        {
+            var patient = await _sessionResolver.ResolveAsync(dto.PatientToken);
+            if (patient == null)
+                return Unauthorized(new { message = "التوكين غير صالح." });
+
+            var existingSubscription = await _unitOfWork.Reposit<PushSubscription>()
+                .GetEntityWithSpec(new PushSubscriptionByEndpointSpecification(dto.Endpoint));
+
+            if (existingSubscription != null)
+            {
+                existingSubscription.PatientId = patient.Id;
+                existingSubscription.P256dh = dto.P256dh;
+                existingSubscription.Auth = dto.Auth;
+
+                _unitOfWork.Reposit<PushSubscription>().Update(existingSubscription);
+            }
+            else
+            {
+                var newSubscription = new PushSubscription
+                {
+                    PatientId = patient.Id,
+                    Endpoint = dto.Endpoint,
+                    P256dh = dto.P256dh,
+                    Auth = dto.Auth
+                };
+
+                await _unitOfWork.Reposit<PushSubscription>().AddAsync(newSubscription);
+            }
+            await _unitOfWork.CompleteAsync();
+
+            return Ok(new { message = "تم حفظ اشتراك الإشعارات بنجاح." });
+        }
+
+
+
+
+
+
+
+
+
+
     }
 }

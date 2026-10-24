@@ -16,3 +16,21 @@ E:\Coding\Clinic booking site\Clinic.Service\obj\Debug\net8.0\Clinic.Service.dll
 E:\Coding\Clinic booking site\Clinic.Service\obj\Debug\net8.0\refint\Clinic.Service.dll
 E:\Coding\Clinic booking site\Clinic.Service\obj\Debug\net8.0\Clinic.Service.pdb
 E:\Coding\Clinic booking site\Clinic.Service\obj\Debug\net8.0\ref\Clinic.Service.dll
+D:\Amira test\Clinic booking site\Clinic.Service\bin\Debug\net8.0\Clinic.Service.deps.json
+D:\Amira test\Clinic booking site\Clinic.Service\bin\Debug\net8.0\Clinic.Service.dll
+D:\Amira test\Clinic booking site\Clinic.Service\bin\Debug\net8.0\Clinic.Service.pdb
+D:\Amira test\Clinic booking site\Clinic.Service\bin\Debug\net8.0\Clinic.Domain.dll
+D:\Amira test\Clinic booking site\Clinic.Service\bin\Debug\net8.0\Service Abstraction.dll
+D:\Amira test\Clinic booking site\Clinic.Service\bin\Debug\net8.0\Service Abstraction.pdb
+D:\Amira test\Clinic booking site\Clinic.Service\bin\Debug\net8.0\Clinic.Domain.pdb
+D:\Amira test\Clinic booking site\Clinic.Service\obj\Debug\net8.0\Clinic.Service.csproj.AssemblyReference.cache
+D:\Amira test\Clinic booking site\Clinic.Service\obj\Debug\net8.0\Clinic.Service.GeneratedMSBuildEditorConfig.editorconfig
+D:\Amira test\Clinic booking site\Clinic.Service\obj\Debug\net8.0\Clinic.Service.AssemblyInfoInputs.cache
+D:\Amira test\Clinic booking site\Clinic.Service\obj\Debug\net8.0\Clinic.Service.AssemblyInfo.cs
+D:\Amira test\Clinic booking site\Clinic.Service\obj\Debug\net8.0\Clinic.Service.csproj.CoreCompileInputs.cache
+D:\Amira test\Clinic booking site\Clinic.Service\obj\Debug\net8.0\Clinic.Service.sourcelink.json
+D:\Amira test\Clinic booking site\Clinic.Service\obj\Debug\net8.0\Clinic.S.D4D87BC0.Up2Date
+D:\Amira test\Clinic booking site\Clinic.Service\obj\Debug\net8.0\Clinic.Service.dll
+D:\Amira test\Clinic booking site\Clinic.Service\obj\Debug\net8.0\refint\Clinic.Service.dll
+D:\Amira test\Clinic booking site\Clinic.Service\obj\Debug\net8.0\Clinic.Service.pdb
+D:\Amira test\Clinic booking site\Clinic.Service\obj\Debug\net8.0\ref\Clinic.Service.dll
