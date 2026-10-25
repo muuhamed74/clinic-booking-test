@@ -55,8 +55,7 @@
               "ViewState": "AgIAAA8AAAAAAAAAAAAAACcAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-09-11T14:27:51.042Z",
-              "IsPinned": true,
-              "EditorCaption": ""
+              "IsPinned": true
             },
             {
               "$type": "Bookmark",
@@ -72,8 +71,7 @@
               "RelativeToolTip": "Clinic booking site\\appsettings.json",
               "ViewState": "AgIAABsAAAAAAAAAAAAAAD8AAAADAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2026-10-25T00:16:57.198Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-10-25T00:16:57.198Z"
             },
             {
               "$type": "Document",
@@ -107,7 +105,7 @@
               "RelativeDocumentMoniker": "Clinic.Service\\Patien-Notofcations\\PatientNotificationService.cs",
               "ToolTip": "D:\\Amira test\\Clinic booking site\\Clinic.Service\\Patien-Notofcations\\PatientNotificationService.cs",
               "RelativeToolTip": "Clinic.Service\\Patien-Notofcations\\PatientNotificationService.cs",
-              "ViewState": "AgIAAM4AAAAAAAAAAADwv+YAAAARAAAAAAAAAA==",
+              "ViewState": "AgIAAKwAAAAAAAAAAAAcwPgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-10-15T14:05:41.397Z",
               "EditorCaption": ""

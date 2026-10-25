@@ -187,11 +187,8 @@ namespace Clinic.Service.Patien_Notofcations
                 Console.WriteLine($"[Notification Trace] Zero SignalR connections found for PatientId: {notification.PatientId}. Patient is considered OFF-LINE.");
             }
 
-            if (!sentViaSignalR)
-            {
-                Console.WriteLine($"[Notification Trace] Routing execution to WebPush for PatientId: {notification.PatientId}...");
-                await SendWebPushAsync(notification.PatientId, notification.Title, notification.Message);
-            }
+            Console.WriteLine($"[Notification Trace] Routing execution to WebPush for PatientId: {notification.PatientId}...");
+            await SendWebPushAsync(notification.PatientId, notification.Title, notification.Message);
         }
 
 
