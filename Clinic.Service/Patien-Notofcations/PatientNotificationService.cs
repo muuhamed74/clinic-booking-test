@@ -152,39 +152,19 @@ namespace Clinic.Service.Patien_Notofcations
 
         public async Task DispatchNotificationAsync(PatientNotification notification)
         {
-            #region
-            //var connectionIds = NotificationHub.GetConnections(notification.PatientId);
-
-            //if (connectionIds != null && connectionIds.Any())
-            //{
-
-            //    foreach (var connId in connectionIds)
-            //    {
-            //        await _hubContext.Clients.Client(connId).SendAsync("ReceiveNotification", new
-            //        {
-            //            notification.Title,
-            //            notification.Message,
-            //            notification.CreatedAt
-            //        });
-            //    }
-            //}
-            //else
-            //{
-            //    await SendWebPushAsync(notification.PatientId, notification.Title, notification.Message);
-            //}
-            #endregion
             var connectionIds = NotificationHub.GetConnections(notification.PatientId);
 
             bool sentViaSignalR = false;
 
             if (connectionIds != null && connectionIds.Any())
             {
+                Console.WriteLine($"[Notification Trace] Found {connectionIds.Count} SignalR connection(s) for PatientId: {notification.PatientId}");
+
                 try
                 {
-                    Console.WriteLine($"[Notification Debug] Patient {notification.PatientId} has {connectionIds.Count} connection(s). Trying SignalR...");
-
                     foreach (var connId in connectionIds)
                     {
+                        Console.WriteLine($"[Notification Trace] Attempting to send via SignalR to ConnectionId: {connId}");
                         await _hubContext.Clients.Client(connId).SendAsync("ReceiveNotification", new
                         {
                             notification.Title,
@@ -194,18 +174,22 @@ namespace Clinic.Service.Patien_Notofcations
                     }
 
                     sentViaSignalR = true;
-                    Console.WriteLine($"[Notification Success] Sent via SignalR successfully.");
+                    Console.WriteLine($"[Notification Success] Successfully sent to all active SignalR connections.");
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"[Notification Warning] SignalR failed (Client might be offline): {ex.Message}. Falling back to WebPush...");
+                    Console.WriteLine($"[Notification Warning] SignalR send threw an exception: {ex.Message}. Falling back to WebPush...");
                     sentViaSignalR = false;
                 }
+            }
+            else
+            {
+                Console.WriteLine($"[Notification Trace] Zero SignalR connections found for PatientId: {notification.PatientId}. Patient is considered OFF-LINE.");
             }
 
             if (!sentViaSignalR)
             {
-                Console.WriteLine($"[Notification Debug] Routing to WebPush for Patient {notification.PatientId}...");
+                Console.WriteLine($"[Notification Trace] Routing execution to WebPush for PatientId: {notification.PatientId}...");
                 await SendWebPushAsync(notification.PatientId, notification.Title, notification.Message);
             }
         }
@@ -213,38 +197,10 @@ namespace Clinic.Service.Patien_Notofcations
 
         private async Task SendWebPushAsync(int patientId, string title, string message)
         {
-            #region
-            var subscriptions = await _unitOfWork.Reposit<Clinic.Domain.Entities.Patient_Notifications.PushSubscription>()
-                .ListAsync(new PushSubscriptionsByPatientSpecification(patientId));
-
-            if (!subscriptions.Any()) return;
-
-            var vapidPublicKey = _configuration["VapidKeys:PublicKey"];
-            var vapidPrivateKey = _configuration["VapidKeys:PrivateKey"];
-            var vapidSubject = _configuration["VapidKeys:Subject"];
-
-            if (string.IsNullOrEmpty(vapidPublicKey) || string.IsNullOrEmpty(vapidPrivateKey))
-                return;
-
-            var vapidDetails = new VapidDetails(vapidSubject, vapidPublicKey, vapidPrivateKey);
-            var webPushClient = new WebPushClient();
-
-            var payload = System.Text.Json.JsonSerializer.Serialize(new { title, body = message });
-
-            foreach (var sub in subscriptions)
-            {
-                try
-                {
-                    var pushSubscription = new WebPush.PushSubscription(sub.Endpoint, sub.P256dh, sub.Auth);
-                    await webPushClient.SendNotificationAsync(pushSubscription, payload, vapidDetails);
-                }
-                catch (Exception)
-                {
-                }
-            }
-            #endregion
             try
             {
+                Console.WriteLine($"[WebPush Trace] Querying PushSubscriptions for PatientId: {patientId}");
+
                 var webPushSubscriptions = await _unitOfWork.Reposit<Clinic.Domain.Entities.Patient_Notifications.PushSubscription>()
                     .ListAsync(new PushSubscriptionsByPatientSpecification(patientId));
 
@@ -253,6 +209,8 @@ namespace Clinic.Service.Patien_Notofcations
                     Console.WriteLine($"[WebPush Debug] No push subscriptions found in DB for PatientId: {patientId}");
                     return;
                 }
+
+                Console.WriteLine($"[WebPush Trace] Found {webPushSubscriptions.Count} subscription(s) in DB. Preparing VAPID details...");
 
                 var publicKey = _configuration["VapidKeys:PublicKey"];
                 var privateKey = _configuration["VapidKeys:PrivateKey"];
@@ -273,6 +231,7 @@ namespace Clinic.Service.Patien_Notofcations
                 {
                     try
                     {
+                        Console.WriteLine($"[WebPush Trace] Sending HTTP Push to Endpoint: {subItem.Endpoint}");
                         var pushSub = new WebPush.PushSubscription(subItem.Endpoint, subItem.P256dh, subItem.Auth);
                         await pushClient.SendNotificationAsync(pushSub, jsonPayload, vapidObj);
                         Console.WriteLine($"[WebPush Success] Push notification sent successfully to endpoint: {subItem.Endpoint}");

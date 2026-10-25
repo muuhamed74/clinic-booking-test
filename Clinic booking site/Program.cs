@@ -39,6 +39,12 @@ namespace Clinic_booking_site
             });
 
 
+            //var validVapidKeys = WebPush.VapidHelper.GenerateVapidKeys();
+            //Console.WriteLine($"=== NEW VAPID KEYS ===");
+            //Console.WriteLine($"PublicKey: {validVapidKeys.PublicKey}");
+            //Console.WriteLine($"PrivateKey: {validVapidKeys.PrivateKey}");
+
+
 
             //for validation error
             builder.Services.Configure<ApiBehaviorOptions>(options =>
