@@ -91,18 +91,18 @@ namespace Clinic_booking_site
 
             #region background jobs
 
-            // Schedule Recurring Jobs
-            //RecurringJob.AddOrUpdate<ReminderJob>(
-            //recurringJobId: "SendAppointmentReminders",      
-            //methodCall: job => job.SendRemindersAsync(),     
-            //cronExpression: Cron.Minutely,                   
-            //options: new RecurringJobOptions
-            //{
-            //   TimeZone = egyptZone,                       
-            //},
-            //    queue: "default"
+            //Schedule Recurring Jobs
+            RecurringJob.AddOrUpdate<ReminderJob>(
+            recurringJobId: "SendAppointmentReminders",
+            methodCall: job => job.SendRemindersAsync(),
+            cronExpression: Cron.Minutely,
+            options: new RecurringJobOptions
+            {
+                TimeZone = egyptZone,
+            },
+                queue: "default"
 
-            //);
+            );
 
 
             // Dispatch Pending Notifications Job

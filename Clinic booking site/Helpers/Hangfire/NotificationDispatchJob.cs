@@ -80,47 +80,47 @@ namespace Clinic_booking_site.Helpers.Hangfire
 
             //    await Task.Delay(TimeSpan.FromSeconds(delaySeconds));
             //    _logger.LogInformation("Delay finished.");
-            try
-            {
-                var spec = new PendingNotificationsSpecification();
-                var pending = await _unitOfWork.Reposit<Notification>().ListAsync(spec);
-                var notification = pending.FirstOrDefault();
+            //try
+            //{
+            //    var spec = new PendingNotificationsSpecification();
+            //    var pending = await _unitOfWork.Reposit<Notification>().ListAsync(spec);
+            //    var notification = pending.FirstOrDefault();
 
-                if (notification == null)
-                {
-                    _logger.LogInformation("No pending notifications found.");
-                    return;
-                }
+            //    if (notification == null)
+            //    {
+            //        _logger.LogInformation("No pending notifications found.");
+            //        return;
+            //    }
 
-                _logger.LogInformation($"Dispatching {pending.Count} pending notification(s).");
+            //    _logger.LogInformation($"Dispatching {pending.Count} pending notification(s).");
 
-                var sender = await SelectSenderAsync();
-                if (sender == null)
-                {
-                    _logger.LogWarning("WhatsApp sender reached daily cap or is missing.");
-                    return;
-                }
+            //    var sender = await SelectSenderAsync();
+            //    if (sender == null)
+            //    {
+            //        _logger.LogWarning("WhatsApp sender reached daily cap or is missing.");
+            //        return;
+            //    }
 
-                await _messageProvider.SendAsync(sender.SessionId, notification.PhoneNumber, notification.Message);
+            //    await _messageProvider.SendAsync(sender.SessionId, notification.PhoneNumber, notification.Message);
 
-                notification.IsSent = true;
-                notification.SentAt = DateTime.UtcNow;
-                notification.SentBySessionId = sender.SessionId;
-                _unitOfWork.Reposit<Notification>().Update(notification);
-                await _unitOfWork.CompleteAsync();
+            //    notification.IsSent = true;
+            //    notification.SentAt = DateTime.UtcNow;
+            //    notification.SentBySessionId = sender.SessionId;
+            //    _unitOfWork.Reposit<Notification>().Update(notification);
+            //    await _unitOfWork.CompleteAsync();
 
-                var delaySeconds = Random.Shared.Next(
-                    _notificationSettings.MinDelaySeconds,
-                    _notificationSettings.MaxDelaySeconds + 1);
-                _logger.LogInformation($"Waiting for {delaySeconds} seconds before next notification...");
+            //    var delaySeconds = Random.Shared.Next(
+            //        _notificationSettings.MinDelaySeconds,
+            //        _notificationSettings.MaxDelaySeconds + 1);
+            //    _logger.LogInformation($"Waiting for {delaySeconds} seconds before next notification...");
 
-                await Task.Delay(TimeSpan.FromSeconds(delaySeconds));
-                _logger.LogInformation("Delay finished.");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "NotificationDispatchJob: Unexpected error during dispatch.");
-            }
+            //    await Task.Delay(TimeSpan.FromSeconds(delaySeconds));
+            //    _logger.LogInformation("Delay finished.");
+            //}
+            //catch (Exception ex)
+            //{
+            //    _logger.LogError(ex, "NotificationDispatchJob: Unexpected error during dispatch.");
+            //}
 
 
         }

@@ -16,16 +16,19 @@ namespace Clinic_booking_site.Helpers.Hangfire
         private readonly INotificationService _notificationService;
         private readonly ILogger<ReminderJob> _logger;
         private readonly Iwpsenderservice _wpsenderservice;
+        private readonly IPatientNotificationService _patientNotificationService;
 
         public ReminderJob(IUnitOfWork unitOfWork,
             INotificationService notificationService,
             ILogger<ReminderJob> logger,
-            Iwpsenderservice wpsenderservice)
+            Iwpsenderservice wpsenderservice,
+            IPatientNotificationService patientNotificationService)
         {
             _unitOfWork = unitOfWork;
             _notificationService = notificationService;
             _logger = logger;
             _wpsenderservice = wpsenderservice;
+            _patientNotificationService = patientNotificationService;
         }
 
 
@@ -52,9 +55,11 @@ namespace Clinic_booking_site.Helpers.Hangfire
                     var existingReminder = await _unitOfWork.Reposit<Notification>().GetEntityWithSpec(existingReminderSpec);
 
                     if (existingReminder != null && existingReminder.IsSent)
-                        continue; 
+                        continue;
 
                     //await _wpsenderservice.SendReminderAsync(appointment);
+                    await _patientNotificationService.SendStatusAsync(appointment);
+
 
                 }
             }
