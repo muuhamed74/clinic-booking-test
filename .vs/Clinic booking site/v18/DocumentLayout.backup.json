@@ -7,12 +7,8 @@
       "RelativeMoniker": "D:0:0:{6AD5E23C-73A1-4F4C-8E55-2DAF9E0CE2DE}|Clinic booking site\\Clinic booking site.csproj|solutionrelative:clinic booking site\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{6AD5E23C-73A1-4F4C-8E55-2DAF9E0CE2DE}|Clinic booking site\\Clinic booking site.csproj|d:\\amira test\\clinic booking site\\clinic booking site\\helpers\\hangfire\\notificationdispatchjob.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{6AD5E23C-73A1-4F4C-8E55-2DAF9E0CE2DE}|Clinic booking site\\Clinic booking site.csproj|solutionrelative:clinic booking site\\helpers\\hangfire\\notificationdispatchjob.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{6AD5E23C-73A1-4F4C-8E55-2DAF9E0CE2DE}|Clinic booking site\\Clinic booking site.csproj|d:\\amira test\\clinic booking site\\clinic booking site\\helpers\\hangfire\\reminderjob.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{6AD5E23C-73A1-4F4C-8E55-2DAF9E0CE2DE}|Clinic booking site\\Clinic booking site.csproj|solutionrelative:clinic booking site\\helpers\\hangfire\\reminderjob.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{6AD5E23C-73A1-4F4C-8E55-2DAF9E0CE2DE}|Clinic booking site\\Clinic booking site.csproj|d:\\amira test\\clinic booking site\\clinic booking site\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{6AD5E23C-73A1-4F4C-8E55-2DAF9E0CE2DE}|Clinic booking site\\Clinic booking site.csproj|solutionrelative:clinic booking site\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{5F4F6259-D5CA-4E27-BEF2-5E363C6E8666}|Clinic.Service\\Clinic.Service.csproj|d:\\amira test\\clinic booking site\\clinic.service\\adminservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -21,10 +17,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{5F4F6259-D5CA-4E27-BEF2-5E363C6E8666}|Clinic.Service\\Clinic.Service.csproj|d:\\amira test\\clinic booking site\\clinic.service\\bookingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{5F4F6259-D5CA-4E27-BEF2-5E363C6E8666}|Clinic.Service\\Clinic.Service.csproj|solutionrelative:clinic.service\\bookingservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{6AD5E23C-73A1-4F4C-8E55-2DAF9E0CE2DE}|Clinic booking site\\Clinic booking site.csproj|d:\\amira test\\clinic booking site\\clinic booking site\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{6AD5E23C-73A1-4F4C-8E55-2DAF9E0CE2DE}|Clinic booking site\\Clinic booking site.csproj|solutionrelative:clinic booking site\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     }
   ],
   "DocumentGroupContainers": [
@@ -44,23 +36,10 @@
               "RelativeDocumentMoniker": "Clinic booking site\\Program.cs",
               "ToolTip": "D:\\Amira test\\Clinic booking site\\Clinic booking site\\Program.cs",
               "RelativeToolTip": "Clinic booking site\\Program.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAADwv4gAAAAwAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAmAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-09-11T14:27:51.042Z",
               "IsPinned": true,
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "NotificationDispatchJob.cs",
-              "DocumentMoniker": "D:\\Amira test\\Clinic booking site\\Clinic booking site\\Helpers\\Hangfire\\NotificationDispatchJob.cs",
-              "RelativeDocumentMoniker": "Clinic booking site\\Helpers\\Hangfire\\NotificationDispatchJob.cs",
-              "ToolTip": "D:\\Amira test\\Clinic booking site\\Clinic booking site\\Helpers\\Hangfire\\NotificationDispatchJob.cs",
-              "RelativeToolTip": "Clinic booking site\\Helpers\\Hangfire\\NotificationDispatchJob.cs",
-              "ViewState": "AgIAAFQAAAAAAAAAAAAowAwAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-26T09:06:23.051Z",
               "EditorCaption": ""
             },
             {
@@ -69,20 +48,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "ReminderJob.cs",
-              "DocumentMoniker": "D:\\Amira test\\Clinic booking site\\Clinic booking site\\Helpers\\Hangfire\\ReminderJob.cs",
-              "RelativeDocumentMoniker": "Clinic booking site\\Helpers\\Hangfire\\ReminderJob.cs",
-              "ToolTip": "D:\\Amira test\\Clinic booking site\\Clinic booking site\\Helpers\\Hangfire\\ReminderJob.cs",
-              "RelativeToolTip": "Clinic booking site\\Helpers\\Hangfire\\ReminderJob.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAACQAAAAuAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-26T08:26:38.067Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 1,
               "Title": "appsettings.json",
               "DocumentMoniker": "D:\\Amira test\\Clinic booking site\\Clinic booking site\\appsettings.json",
               "RelativeDocumentMoniker": "Clinic booking site\\appsettings.json",
@@ -90,11 +56,12 @@
               "RelativeToolTip": "Clinic booking site\\appsettings.json",
               "ViewState": "AgIAABsAAAAAAAAAAAAAAD8AAAADAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2026-10-25T00:16:57.198Z"
+              "WhenOpened": "2026-10-25T00:16:57.198Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 3,
               "Title": "BookingService.cs",
               "DocumentMoniker": "D:\\Amira test\\Clinic booking site\\Clinic.Service\\BookingService.cs",
               "RelativeDocumentMoniker": "Clinic.Service\\BookingService.cs",
@@ -107,7 +74,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 2,
               "Title": "AdminService.cs",
               "DocumentMoniker": "D:\\Amira test\\Clinic booking site\\Clinic.Service\\AdminService.cs",
               "RelativeDocumentMoniker": "Clinic.Service\\AdminService.cs",

@@ -3,6 +3,7 @@ using Clinic.Domain.Entities.Enums;
 using Clinic.Domain.Entities.Patient_Notifications;
 using Clinic.Domain.Repositories;
 using Clinic.Domain.Specifications.Clinic.Specifications.Patient_Notifiacations_Specs;
+using Clinic.Domain.Specifications.Clinic.Specifications.Patient_Notifications;
 using Clinic.Service.Hubs;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
@@ -116,10 +117,43 @@ namespace Clinic.Service.Patien_Notofcations
 
         public async Task SendReminderAsync(Appointment appointment, int? appointmentArchiveId = null)
         {
-            if (_notificationSettings.SendReminder)
+            if (!_notificationSettings.SendReminder) return;
+            if (appointment.PatientId is not int patientId) return;
+            if (appointment.EstimatedTime is null) return;
+
+            var apptEgypt = TimeZoneInfo.ConvertTimeFromUtc(
+                DateTime.SpecifyKind(appointment.EstimatedTime.Value, DateTimeKind.Utc), EgyptZone);
+
+            var dayStartUtc = TimeZoneInfo.ConvertTimeToUtc(
+                DateTime.SpecifyKind(apptEgypt.Date, DateTimeKind.Unspecified), EgyptZone);
+
+            var todays = await _unitOfWork.Reposit<PatientNotification>()
+                .ListAsync(new PatientDailyReminderStateSpecification(patientId, dayStartUtc));
+
+            var lastReminder = todays
+                .Where(n => n.Type == NotificationType.Reminder)
+                .OrderByDescending(n => n.CreatedAt)
+                .FirstOrDefault();
+
+            if (lastReminder != null)
             {
-                await SendInternalAsync(appointment, appointmentArchiveId, NotificationType.Reminder);
+                var lastResched = todays
+                    .Where(n => n.Type == NotificationType.Rescheduling)
+                    .OrderByDescending(n => n.CreatedAt)
+                    .FirstOrDefault();
+
+                if (lastResched == null || lastResched.CreatedAt <= lastReminder.CreatedAt)
+                    return;
             }
+
+            var notification = await SendInternalAsync(
+                appointment, appointmentArchiveId, NotificationType.Reminder);
+
+            if (notification == null) return;
+
+            await _unitOfWork.CompleteAsync();
+
+            await DispatchNotificationAsync(notification);
         }
 
 
@@ -244,30 +278,6 @@ namespace Clinic.Service.Patien_Notofcations
                 Console.WriteLine($"[WebPush General Error]: {ex.Message}");
             }
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

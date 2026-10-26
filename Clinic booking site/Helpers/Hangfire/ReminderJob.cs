@@ -38,29 +38,24 @@ namespace Clinic_booking_site.Helpers.Hangfire
         {
             try
             {
-                DateTime nowUtc = DateTime.UtcNow;
-                DateTime fromUtc = nowUtc;
-                DateTime toUtc = nowUtc.AddMinutes(35);
+                var nowUtc = DateTime.UtcNow;
+                var toUtc = nowUtc.AddMinutes(35);
 
+                var appointments = await _unitOfWork.Reposit<Appointment>()
+                    .ListAsync(new AppointmentsForReminderSpecification(nowUtc, toUtc));
 
-                var spec = new AppointmentsForReminderSpecification(fromUtc, toUtc);
-                var appointments = await _unitOfWork.Reposit<Appointment>().ListAsync(spec);
-
-                _logger.LogInformation($"Querying appointments between {fromUtc:HH:mm:ss} and {toUtc:HH:mm:ss} (UTC)");
+                _logger.LogInformation("Querying appointments between {From:HH:mm:ss} and {To:HH:mm:ss} (UTC)", nowUtc, toUtc);
 
                 foreach (var appointment in appointments)
                 {
-
-                    var existingReminderSpec = new NotificationsByAppointmentIdAndTypeSpecification(appointment.Id, NotificationType.Reminder);
-                    var existingReminder = await _unitOfWork.Reposit<Notification>().GetEntityWithSpec(existingReminderSpec);
-
-                    if (existingReminder != null && existingReminder.IsSent)
-                        continue;
-
-                    //await _wpsenderservice.SendReminderAsync(appointment);
-                    await _patientNotificationService.SendStatusAsync(appointment);
-
-
+                    try
+                    {
+                        await _patientNotificationService.SendReminderAsync(appointment);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, "Reminder failed for patient {PatientId}", appointment.PatientId);
+                    }
                 }
             }
             catch (Exception ex)
